@@ -1,0 +1,29 @@
+Rubric Completed on Time (5 Points)
+
+Site uses a seperate maps API (25 points):
+	Map is functional on site (5 points)
+	Image coordinates stored in MYSQL (5 points)
+	Image appears when clicked (15 points)
+
+Site is functional (40 points):
+	Users can submit pictures with a caption (10 points)
+	Users can comment on pictures (10 points)
+	Users can delete their pictures (5 points)
+	Users can delete their comments (5 points)
+	Users can log in (5 points)
+	New users can be created (5 points)
+
+
+Best Practices (15 Points):
+	Code is well formatted and easy to read, with proper commenting (3 points)
+	Safe from SQL Injection attacks (2 points)
+	Site follows the FIEO philosophy (3 points)
+	All pages pass the W3C validator (2 points)
+	CSRF tokens are passed when necessary (5 points)
+	Site passes jshint (3 points extra credit?)
+
+Usability (5 Points):
+	Site is intuitive to use and navigate (4 points)
+	Site is visually appealing (1 point)
+
+Creative portion (10 points)
