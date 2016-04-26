@@ -1,0 +1,15 @@
+	Image appears when clicked (15 points)
+
+	Users can submit pictures with a caption (10 points)
+	Users can comment on pictures (10 points)
+	Users can delete their pictures (5 points)
+	Users can delete their comments (5 points)
+
+	Code is well formatted and easy to read, with proper commenting (3 points)
+	Safe from SQL Injection attacks (2 points)
+	Site follows the FIEO philosophy (3 points)
+	All pages pass the W3C validator (2 points)
+	CSRF tokens are passed when necessary (5 points)
+	Site passes jshint (3 points extra credit?)
+
+Creative portion (10 points)
