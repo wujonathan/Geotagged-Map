@@ -1,11 +1,11 @@
 <?php
-/*fetches user events to load the calendar. This includes personal events, shared calendar events to the user as well as invited events*/
+/*Fetches all of the information needed to generate all the markers and the content of those markers. Echos an array with picture information and comment arrays as entries*/
 header("Content-Type: application/json");
 
 require 'database.php';
 require 'user_agent_test.php';
 
-
+//fetches the picture info
 $pictures_array=array();
 $stmt = $mysqli->prepare("SELECT latitude, longitude, id, path, description, added, user_id FROM pictures");
 if(!$stmt){
@@ -23,6 +23,8 @@ while($stmt->fetch()){
 $stmt->close();
 
 for($i=0;$i<sizeof($pictures_array);$i++){
+
+	//fetches the comments associated with each picture
 	$comment_array=array();
 	$stmt2 = $mysqli->prepare("SELECT id, comment, added, user_id FROM comments WHERE picture_id = ?");
 	if(!$stmt2){
@@ -39,10 +41,8 @@ for($i=0;$i<sizeof($pictures_array);$i++){
 		array_push($comment_array, $status2);
 	}
 	$stmt2->close();
-	//echo json_encode($comment_array);
 	$pictures_array[$i]["comments"]=$comment_array;
 }
-
 echo json_encode($pictures_array);
 
 ?>

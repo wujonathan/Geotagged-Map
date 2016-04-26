@@ -1,5 +1,5 @@
 <?php
-/*Adds an event to the database after getting the post variables from the ajax request. Adds events to other group users if they exist*/
+/*Adds a comment to the database after getting the post variables from the ajax request.*/
 header("Content-Type: application/json");
 require 'database.php';
 require 'user_agent_test.php';

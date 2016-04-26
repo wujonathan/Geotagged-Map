@@ -1,15 +1,26 @@
 <?php
-/*Deletes an event from the database after getting the post vairable of event id from the ajax request*/
+/*Deletes a picture and its associated comments from the database after getting the post vairables from the ajax request*/
 header("Content-Type: application/json");
 require 'database.php';
 require 'user_agent_test.php';
 require 'csrf_detector.php';
 
-$eventID=$mysqli->real_escape_string($_POST['pictureID']);
+$picture_id=$mysqli->real_escape_string($_POST['picture_id']);
 
-//inset code to delete all comments associated with pic
-//make array of comment id's and itterate through with deleteComment.php
+//delete all comments associated with pic
+$stmt = $mysqli->prepare("DELETE FROM comments WHERE picture_id=?");
+if(!$stmt){
+	echo json_encode(array(
+		"success" => false,
+		"message" => $mysqli->error
+		));
+	exit;
+}
+$stmt->bind_param('i',$picture_id);
+$stmt->execute();
+$stmt->close();
 
+//delete the pic itself
 $stmt = $mysqli->prepare("DELETE FROM pictures WHERE id=?");
 if(!$stmt){
 	echo json_encode(array(
@@ -18,7 +29,7 @@ if(!$stmt){
 		));
 	exit;
 }
-$stmt->bind_param('i',$eventID);
+$stmt->bind_param('i',$picture_id);
 $stmt->execute();
 $stmt->close();
 

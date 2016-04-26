@@ -38,21 +38,24 @@
     <div id="userCreateMsg"></div> 
   </div>
 </div>
+<div id="rand">
+  <input id="viewRandom" type="button" name="submit" value="Rand"/>
+</div>
 <div id="map" style="width: 1200px; height: 500px;"></div>
 <div class="addPicture">
   <div>
     <form enctype="multipart/form-data" method="POST">
       <p>
         <input type="hidden" name="MAX_FILE_SIZE" value="20000000" />
-        <label for="uploadfile_input">Choose a file to upload:</label> <input name="uploadedfile" type="file" id="uploadedfile" />
+        Choose a file to upload:<input name="uploadedfile" type="file" id="uploadedfile" />
       </p>
       <p>Click on the map where you'd like to place the picture <br>
-      Lattitude: <input type="text" id= "lat" readonly/> <br>
-      Longitude: <input type="text" id= "lng" readonly/> <br>
+        Lattitude: <input type="text" id= "lat" readonly/> <br>
+        Longitude: <input type="text" id= "lng" readonly/> <br>
       </p>
       <p>
-      <textarea rows="4" cols="50" name="desc" id="desc" placeholder="Enter Description Here.."></textarea>  <br>
-      <input id="submitNewPicture" type="button" value="Add Picture"/>
+        <textarea rows="4" cols="50" name="desc" id="desc" placeholder="Enter Description Here.."></textarea>  <br>
+        <input id="submitNewPicture" type="button" value="Add Picture"/>
       </p>
     </form>
   </div>
