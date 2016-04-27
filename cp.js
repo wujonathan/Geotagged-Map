@@ -34,15 +34,15 @@ function homeload(){
 			//Creates each of the contents for each marker
 			var path = 'cp_pictures/'+response[i].path.substring(14);
 
-			content[i] = '<div> ' + response[i].added;
-			content[i] +='<div class=content><img border="0" align="Left" src="'+path+'"></div>';
-			content[i] += '<div class=description>'+response[i].desc+'</div>';
+			content[i] = '<form ><div class="time"> ' + response[i].added+'</div><div>';
+			content[i] += '<div class="description">'+response[i].desc+'</div>';
+			content[i] +='<div class="content"><img border="0" align="Left" src="'+path+'"></div>';
 			content[i] += '</div>';
-			content[i] += '<div class=comments>';
+			content[i] += '<div class="comments">';
 			var j;
 			for(j=0;j<response[i].comments.length;j++){
-				content[i] +='<div class=comment>'+response[i].comments[j].comment+'</div>';
-				content[i] +=' <div class=time>'+response[i].comments[j].added + '</div>';
+				content[i] +='<div class="comment">'+response[i].comments[j].comment+'</div>';
+				content[i] +=' <div class="time">'+response[i].comments[j].added + '</div>';
 			}
 			content[i] += '</div>';
 
@@ -87,26 +87,26 @@ function load(){
 			//Creates each of the contents for each marker
 			var path = 'cp_pictures/'+response[i].path.substring(14);
 
-			content[i] = '<form ><div> ' + response[i].added;
+			content[i] = '<form ><div class="time"> ' + response[i].added+'</div><div>';
+			content[i] += '<div class="description">'+response[i].desc+'</div>';
 
 			if(usrId == response[i].user_id){
 				content[i]+= '<input data-picPath="'+response[i].path.substring(14)+'" data-picId="'+response[i].picture_id+'" onclick="return deletePicture(this);" class="delete" type="button" value="Delete Picture"/>';
 			}
-			content[i] +='<div class=content><img border="0" align="Left" src="'+path+'"></div>';
-			content[i] += '<div class=description>'+response[i].desc+'</div>';
+			content[i] +='<div class="content"><img border="0" align="Left" src="'+path+'"></div>';
 			content[i] += '</div>';
-			content[i] += '<div class=comments>';
+			content[i] += '<div class=c"omments">';
 			var j;
 			for(j=0;j<response[i].comments.length;j++){
-				content[i] +='<div class=comment>'+response[i].comments[j].comment+'</div>';
-				content[i] +=' <div class=time>'+response[i].comments[j].added;
+				content[i] +='<div class="comment">'+response[i].comments[j].comment+'</div>';
+				content[i] +=' <div class="time">'+response[i].comments[j].added;
 				if(usrId == response[i].comments[j].user_id){
 					content[i] += '<input data-comId="'+response[i].comments[j].comment_id+'" onclick="return deleteComment(this);" class="delete" type="button" value="Delete Comment"/>';
 				}
 				content[i] += '</div>';
 			}
 			content[i] += '</div>';
-			content[i] += '<div class=addCom>';
+			content[i] += '<div class="addCom">';
 			content[i] += '<textarea rows="4" cols="10" name="comment" id="comment" placeholder="Enter Comment Here..."></textarea><br>';
 			content[i] += '<input data-iVal="'+i+'" data-picId="'+response[i].picture_id+'" onclick="return addCommentForm(this);" class="submitComment" type="button" value="Add Comment"/>';
 			content[i] += '</div></form>';
@@ -133,26 +133,26 @@ function load(){
 			if(tag===response[i].tag){
 				var path = 'cp_pictures/'+response[i].path.substring(14);
 
-				content[i] = '<form ><div> ' + response[i].added;
+				content[i] = '<form ><div class="time"> ' + response[i].added+'</div><div>';
+				content[i] += '<div class="description">'+response[i].desc+'</div>';
 
 				if(usrId == response[i].user_id){
 					content[i]+= '<input data-picPath="'+response[i].path.substring(14)+'" data-picId="'+response[i].picture_id+'" onclick="return deletePicture(this);" class="delete" type="button" value="Delete Picture"/>';
 				}
-				content[i] +='<div class=content><img border="0" align="Left" src="'+path+'"></div>';
-				content[i] += '<div class=description>'+response[i].desc+'</div>';
+				content[i] +='<div class="content"><img border="0" align="Left" src="'+path+'"></div>';
 				content[i] += '</div>';
-				content[i] += '<div class=comments>';
+				content[i] += '<div class="comments">';
 				var j;
 				for(j=0;j<response[i].comments.length;j++){
-					content[i] +='<div class=comment>'+response[i].comments[j].comment+'</div>';
-					content[i] +=' <div class=time>'+response[i].comments[j].added;
+					content[i] +='<div class="comment">'+response[i].comments[j].comment+'</div>';
+					content[i] +=' <div class="time">'+response[i].comments[j].added;
 					if(usrId == response[i].comments[j].user_id){
 						content[i] += '<input data-comId="'+response[i].comments[j].comment_id+'" onclick="return deleteComment(this);" class="delete" type="button" value="Delete Comment"/>';
 					}
 					content[i] += '</div>';
 				}
 				content[i] += '</div>';
-				content[i] += '<div class=addCom>';
+				content[i] += '<div class="addCom">';
 				content[i] += '<textarea rows="4" cols="10" name="comment" id="comment" placeholder="Enter Comment Here..."></textarea><br>';
 				content[i] += '<input data-iVal="'+i+'" data-picId="'+response[i].picture_id+'" onclick="return addCommentForm(this);" class="submitComment" type="button" value="Add Comment"/>';
 				content[i] += '</div></form>';
