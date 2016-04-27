@@ -23,6 +23,15 @@
     display: none;
 }
 
+.viewTags{
+    position: relative;
+    display: none;
+}
+
+#viewRandom{
+    position: relative;
+}
+
 .userLoginDetails {
     width: 360px;
     height: 200px;

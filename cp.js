@@ -338,6 +338,7 @@ $("#submitLogin").click( function(){
 			$(".logins").hide();
 			$(".logouts").show();
 			$(".addPicture").show();
+			$(".viewTags").show();
 			$("#loginUserMsg").empty();
 			$("#userlogin")[0].reset();
 			$("#loggedUser").append('<div>Hello '+usrname+'!</div>');
@@ -392,6 +393,7 @@ $("#logout").click( function(){
 			$(".logouts").hide();
 			$(".logins").show();
 			$(".addPicture").hide();
+			$(".viewTags").hide();
 			$("#loggedUser").empty();
 			$("#loggedUser").attr("data-tog","0");
 			homeload();
