@@ -98,10 +98,8 @@ function load(){
 			content[i] += '<div class=comments>';
 			var j;
 			for(j=0;j<response[i].comments.length;j++){
-				console.log(response[i].comments[j]);
 				content[i] +='<div class=comment>'+response[i].comments[j].comment+'</div>';
 				content[i] +=' <div class=time>'+response[i].comments[j].added;
-				console.log(response[i].comments[j].user_id +", "+ usrId);
 				if(usrId == response[i].comments[j].user_id){
 					content[i] += '<input data-comId="'+response[i].comments[j].comment_id+'" onclick="return deleteComment(this);" class="delete" type="button" value="Delete Comment"/>';
 				}
@@ -146,10 +144,8 @@ function load(){
 				content[i] += '<div class=comments>';
 				var j;
 				for(j=0;j<response[i].comments.length;j++){
-					console.log(response[i].comments[j]);
 					content[i] +='<div class=comment>'+response[i].comments[j].comment+'</div>';
 					content[i] +=' <div class=time>'+response[i].comments[j].added;
-					console.log(response[i].comments[j].user_id +", "+ usrId);
 					if(usrId == response[i].comments[j].user_id){
 						content[i] += '<input data-comId="'+response[i].comments[j].comment_id+'" onclick="return deleteComment(this);" class="delete" type="button" value="Delete Comment"/>';
 					}
@@ -197,8 +193,6 @@ function addCommentForm(el){
 	var picture_id = $(el).attr('data-picId');
 	var user_id = usrId;
 	var i=$(el).attr('data-iVal');
-
-	console.log(i+ "is the i");
 	if (comments === "") {
 		return;
 	}
@@ -233,7 +227,6 @@ function deletePicture(el){
 			var sdata = {
 				path : path
 			};
-			console.log(sdata);
 			$.ajax({url: 'deletePic.php', dataType: 'json', data: sdata, type: 'post', success: function(response){
 				if(response.success){
 					load();
@@ -412,7 +405,6 @@ $("#submitNewPicture").click( function(){
 	var lat = $("#lat").val();
 	var lng = $("#lng").val();
 	var desc = $("#desc").val();
-	console.log("here");
 	var tag;
 	var tags=document.getElementsByName("tags");
 	for(var i=0; i<tags.length;i++){
@@ -431,15 +423,14 @@ $("#submitNewPicture").click( function(){
 		description : desc,
 		tag : tag
 	};
-	console.log("and here2");
-	$.ajax({type:'POST', url: 'addPicture.php', data: pdata, dataType: 'json', success: function(response) {
-		if(response.success){ 
-			var file_data = $('#uploadedfile').prop('files')[0];   
-			var form_data = new FormData();                  
-			form_data.append('uploadedfile', file_data);                           
-			$.ajax({url: 'uploadPic.php', dataType: 'json', cache: false, contentType: false, processData: false, data: form_data, type: 'post', success: function(response){
-				if(response.success){
-					$("#newPicture")[0].reset();
+	var file_data = $('#uploadedfile').prop('files')[0];   
+	var form_data = new FormData();                  
+	form_data.append('uploadedfile', file_data); 
+	$.ajax({url: 'uploadPic.php', dataType: 'json', cache: false, contentType: false, processData: false, data: form_data, type: 'post', success: function(response){
+		if(response.success){
+			$("#newPicture")[0].reset();
+			$.ajax({type:'POST', url: 'addPicture.php', data: pdata, dataType: 'json', success: function(response) {
+				if(response.success){ 
 					load();
 				}
 			}
