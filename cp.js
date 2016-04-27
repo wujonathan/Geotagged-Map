@@ -9,12 +9,14 @@ var centerLat;
 var centerLng;
 var map;
 var infowindow;
+var tag;
 
 //This functoon loads the map when the website is first loaded
 function homeload(){
 	//Centers at WashU
 	centerLat=38.64806723893503;
 	centerLng=-90.30880584275044;
+	tag = "all";
 	map = new google.maps.Map(document.getElementById('map'), {
 		zoom: 15,
 		center: new google.maps.LatLng(centerLat, centerLng),
@@ -79,8 +81,9 @@ function load(){
 		var infowindow = new google.maps.InfoWindow();
 
 		var marker, i;
-
-		for (i = 0; i < response.length; i++) {  
+		//Loads all the markers
+		if(tag==="all"){
+			for (i = 0; i < response.length; i++) {  
 			//Creates each of the contents for each marker
 			var path = 'cp_pictures/'+response[i].path.substring(14);
 
@@ -107,7 +110,7 @@ function load(){
 			content[i] += '</div>';
 			content[i] += '<div class=addCom>';
 			content[i] += '<textarea rows="4" cols="10" name="comment" id="comment" placeholder="Enter Comment Here..."></textarea><br>';
-			content[i] += '<input data-picId="'+response[i].picture_id+'" onclick="return addCommentForm(this);" class="submitComment" type="button" value="Add Comment"/>';
+			content[i] += '<input data-iVal="'+i+'" data-picId="'+response[i].picture_id+'" onclick="return addCommentForm(this);" class="submitComment" type="button" value="Add Comment"/>';
 			content[i] += '</div></form>';
 
 			marker = new google.maps.Marker({
@@ -123,7 +126,57 @@ function load(){
 				};
 			})(marker, i));
 		}
-	}});
+
+	}
+	else{
+		//Only loads markers associated with the selected tag
+		for (i = 0; i < response.length; i++) {  
+			//Creates each of the contents for each marker
+			if(tag===response[i].tag){
+				var path = 'cp_pictures/'+response[i].path.substring(14);
+
+				content[i] = '<form ><div> ' + response[i].added;
+
+				if(usrId == response[i].user_id){
+					content[i]+= '<input data-picPath="'+response[i].path.substring(14)+'" data-picId="'+response[i].picture_id+'" onclick="return deletePicture(this);" class="delete" type="button" value="Delete Picture"/>';
+				}
+				content[i] +='<div class=content><img border="0" align="Left" src="'+path+'"></div>';
+				content[i] += '<div class=description>'+response[i].desc+'</div>';
+				content[i] += '</div>';
+				content[i] += '<div class=comments>';
+				var j;
+				for(j=0;j<response[i].comments.length;j++){
+					console.log(response[i].comments[j]);
+					content[i] +='<div class=comment>'+response[i].comments[j].comment+'</div>';
+					content[i] +=' <div class=time>'+response[i].comments[j].added;
+					console.log(response[i].comments[j].user_id +", "+ usrId);
+					if(usrId == response[i].comments[j].user_id){
+						content[i] += '<input data-comId="'+response[i].comments[j].comment_id+'" onclick="return deleteComment(this);" class="delete" type="button" value="Delete Comment"/>';
+					}
+					content[i] += '</div>';
+				}
+				content[i] += '</div>';
+				content[i] += '<div class=addCom>';
+				content[i] += '<textarea rows="4" cols="10" name="comment" id="comment" placeholder="Enter Comment Here..."></textarea><br>';
+				content[i] += '<input data-iVal="'+i+'" data-picId="'+response[i].picture_id+'" onclick="return addCommentForm(this);" class="submitComment" type="button" value="Add Comment"/>';
+				content[i] += '</div></form>';
+
+				marker = new google.maps.Marker({
+					position: new google.maps.LatLng(response[i].lat, response[i].lng),
+					map: map
+				});
+				markers[i] = marker;
+				google.maps.event.addListener(marker, 'click', (function(marker, i) {
+					return function() {
+						map.panTo(marker.position);
+						infowindow.setContent(content[i]);
+						infowindow.open(map, marker);
+					};
+				})(marker, i));
+			}
+		}
+	}
+}});
 //Gets the lat and lng for submitting a picture
 google.maps.event.addListener(map, 'click', function(event) {
 	$("#lat").val(event.latLng.lat());
@@ -143,6 +196,9 @@ function addCommentForm(el){
 	var comments= $(siblings[0]).val();
 	var picture_id = $(el).attr('data-picId');
 	var user_id = usrId;
+	var i=$(el).attr('data-iVal');
+
+	console.log(i+ "is the i");
 	if (comments === "") {
 		return;
 	}
@@ -152,15 +208,16 @@ function addCommentForm(el){
 		user_id : user_id
 	};
 	$.ajax({
-
 		type: 'POST', url: 'addComment.php', data: pdata, dataType: 'json', success: function (response) {
-
 			load();
+			setTimeout(function(){
+				infowindow = new google.maps.InfoWindow();
+				infowindow.setContent(content[i]);
+				infowindow.open(map, markers[i]);
+			},1000);
 		}
-
 	});
 	return false;
-
 }
 
 //This function deletes a picture from both the database and the server
@@ -219,6 +276,10 @@ function toggleState(item){
 
 //Displays a random image as well as its content
 $("#viewRandom").click( function(){
+	if(tag!="all"){
+		tag="all"
+		load();
+	}
 	if(markers.length>0){
 		if(infowindow){
 			infowindow.close();
@@ -228,7 +289,6 @@ $("#viewRandom").click( function(){
 		map.panTo(markers[i].position);
 		infowindow.setContent(content[i]);
 		infowindow.open(map, markers[i]);
-
 	}
 });
 
@@ -352,6 +412,15 @@ $("#submitNewPicture").click( function(){
 	var lat = $("#lat").val();
 	var lng = $("#lng").val();
 	var desc = $("#desc").val();
+	console.log("here");
+	var tag;
+	var tags=document.getElementsByName("tags");
+	for(var i=0; i<tags.length;i++){
+		if(tags[i].checked){
+			tag=tags[i].value;
+			break;
+		}
+	}
 	if (desc === "" || path==="" || lat==="" || lng===""){
 		return;
 	}
@@ -359,8 +428,10 @@ $("#submitNewPicture").click( function(){
 		lat : lat,
 		lng : lng,
 		path : path,
-		description : desc
+		description : desc,
+		tag : tag
 	};
+	console.log("and here2");
 	$.ajax({type:'POST', url: 'addPicture.php', data: pdata, dataType: 'json', success: function(response) {
 		if(response.success){ 
 			var file_data = $('#uploadedfile').prop('files')[0];   
@@ -368,10 +439,7 @@ $("#submitNewPicture").click( function(){
 			form_data.append('uploadedfile', file_data);                           
 			$.ajax({url: 'uploadPic.php', dataType: 'json', cache: false, contentType: false, processData: false, data: form_data, type: 'post', success: function(response){
 				if(response.success){
-					$("#uploadedfile").val("");
-					$("#lat").val("");
-					$("#lng").val("");
-					$("#desc").val("");
+					$("#newPicture")[0].reset();
 					load();
 				}
 			}
@@ -380,3 +448,29 @@ $("#submitNewPicture").click( function(){
 	}
 });
 });
+
+//Displays the funny pictures
+$("#tagFunny").click( function(){
+	tag="funny";
+	load();
+});
+
+//Displays the animal pictures
+$("#tagAnimal").click( function(){
+	tag="animal";
+	load();
+});
+
+//Displays the pretty pictures
+$("#tagPretty").click( function(){
+	tag="pretty";
+	load();
+});
+
+//Displays all the pictures
+$("#tagDisable").click( function(){
+	tag="all";
+	load();
+});
+
+

@@ -1,0 +1,8 @@
+Link to mainpage of website: http://ec2-54-148-37-194.us-west-2.compute.amazonaws.com/~wu.jonathan/CP/
+Jonathan Wu - 437604
+
+This website is a platform where users can add geotagged pictures to a map display. Users may submit pictures to the website which then stores information in Mysql as well as the local server. I used google maps API for ease of display of the map. 
+
+I have two parts to my creative portion: 
+1) I've implemented a function that loads a random picture.
+2) I've allowed users to add optional tags to their pictures. Users may then view all events with a certain tag using the buttons located above the map. 

@@ -7,7 +7,7 @@ require 'user_agent_test.php';
 
 //fetches the picture info
 $pictures_array=array();
-$stmt = $mysqli->prepare("SELECT latitude, longitude, id, path, description, added, user_id FROM pictures");
+$stmt = $mysqli->prepare("SELECT latitude, longitude, id, path, description, added, user_id, tag FROM pictures");
 if(!$stmt){
 	echo json_encode(array(
 		"success" => false,
@@ -15,9 +15,9 @@ if(!$stmt){
 	exit;
 }
 $stmt->execute();
-$stmt->bind_result($latitude, $longitude, $picture_id, $path, $description, $added, $user_id);
+$stmt->bind_result($latitude, $longitude, $picture_id, $path, $description, $added, $user_id, $tag);
 while($stmt->fetch()){
-	$status =  array("picture_id" => htmlspecialchars($picture_id), "lat" => htmlspecialchars($latitude), "lng" =>htmlspecialchars($longitude), "path" => htmlspecialchars($path),"desc" => htmlspecialchars($description),"added" => htmlspecialchars($added),"user_id" => htmlspecialchars($user_id), "comments" => '');		
+	$status =  array("picture_id" => htmlspecialchars($picture_id), "lat" => htmlspecialchars($latitude), "lng" =>htmlspecialchars($longitude), "path" => htmlspecialchars($path),"desc" => htmlspecialchars($description),"added" => htmlspecialchars($added),"user_id" => htmlspecialchars($user_id), "tag" => htmlspecialchars($tag), "comments" => '');		
 	array_push($pictures_array, $status);
 }
 $stmt->close();
